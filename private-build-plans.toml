@@ -1,0 +1,100 @@
+# --- Nova Font ---
+# To build everything: npm run build -- contents::nova
+# To build unhinted TTF only: npm run build -- ttf-unhinted::nova
+# To build TTF only (recommended): npm run build -- ttf::nova
+# More info: https://github.com/be5invis/Iosevka/blob/main/doc/custom-build.md
+
+# Nova (w/o ligatures)
+[buildPlans.nova]
+family = "Nova"
+spacing = "normal"
+serifs = "sans"
+no-cv-ss = false
+export-glyph-names = false
+no-ligation = true
+
+    [buildPlans.nova.variants]
+    inherits = "ss17"
+
+        [buildPlans.nova.variants.design]
+        paren = "normal"
+        question = "corner"
+        asterisk = "penta-high"
+        ampersand = "closed"
+        brace = "curly-flat-boundary"
+        dollar = "open"
+        at = "threefold"
+        caret = "high"
+        capital-f = "serifless"
+        capital-w = "curly-serifless"
+        k = "curly-serifless"
+        f = "serifless"
+        r = "serifed"
+        x = "curly-serifless"
+        t = "standard"
+        a = "double-storey-serifless"
+        w = "curly-serifless"
+        four = "semi-open"
+        
+        lig-double-arrow-bar = "without-notch"
+
+        [buildPlans.nova.variants.italic]
+        f = "tailed"
+        k = "cursive-serifless"
+        m = "top-left-serifed"
+        i = "serifed"
+        
+    
+
+[buildPlans.nova.widths.normal]
+shape = 600
+menu = 5
+css = "normal"
+
+
+# Nova (w/ ligatures)
+[buildPlans.nova-lig]
+family = "Nova"
+spacing = "normal"
+serifs = "sans"
+no-cv-ss = false
+export-glyph-names = false
+
+    [buildPlans.nova-lig.variants]
+    inherits = "ss17"
+
+        [buildPlans.nova-lig.variants.design]
+        paren = "normal"
+        question = "corner"
+        asterisk = "penta-high"
+        ampersand = "closed"
+        brace = "curly-flat-boundary"
+        dollar = "open"
+        at = "threefold"
+        caret = "high"
+        capital-f = "serifless"
+        capital-w = "curly-serifless"
+        k = "curly-serifless"
+        f = "serifless"
+        r = "serifed"
+        x = "curly-serifless"
+        t = "standard"
+        a = "double-storey-serifless"
+        w = "curly-serifless"
+        four = "semi-open"
+        
+        lig-double-arrow-bar = "without-notch"
+
+        [buildPlans.nova-lig.variants.italic]
+        f = "tailed"
+        k = "cursive-serifless"
+        m = "top-left-serifed"
+        i = "serifed"
+        
+    
+
+[buildPlans.nova-lig.widths.normal]
+shape = 600
+menu = 5
+css = "normal"
+
