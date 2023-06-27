@@ -1,0 +1,36 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix linreg clamp fallback] from"../../../support/utils.mjs"
+import [Dotless CvDecompose] from"../../../support/gr.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Yogh : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Letter-Shared-Shapes : SerifedArcStart ArcStartSerif
+
+	define [YoghShape top bot] : glyph-proc
+		include : dispiro
+			if SLAB
+				then : SerifedArcStart.LtrRhs SB Middle top Stroke Hook
+				else : list [g4 SB (top - Hook) [widths.rhs]] [hookstart (top - O)]
+			g4 RightSB (top - ArchDepthB)
+			alsoThruThem {{0.5 0.75}}
+			g4 ([mix SB RightSB 0.1] + Stroke * 0.25) ([mix bot top 0.425] - HalfStroke)
+		include : dispiro
+			widths.rhs
+			g4 [mix SB RightSB 0.75] ([mix bot (top - ArchDepthB) 0.758] + HalfStroke)
+			g4 RightSB ([mix bot (top - ArchDepthB) 0.475])
+			alsoThruThem {{0.25 0.6} {0.5 0.81}}
+			g4 SB (bot + O)
+
+		if SLAB : include : ArcStartSerif.L SB top Stroke Hook
+
+	create-glyph 'Yogh' 0x21C : glyph-proc
+		include : MarkSet.capital
+		include : YoghShape CAP 0
+
+	create-glyph 'yogh' 0x21D : glyph-proc
+		include : MarkSet.p
+		include : YoghShape XH Descender

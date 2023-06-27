@@ -1,0 +1,37 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix linreg clamp fallback] from"../../../support/utils.mjs"
+import [Dotless CvDecompose] from"../../../support/gr.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Wynn : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Letter-Shared-Shapes : SerifFrame SerifedArcStart
+
+	define [WynnShape bot top] : glyph-proc
+		include : VBar.l SB bot top
+
+		local bowlBottom : 0.5 * Stroke + [mix bot top 0.15]
+		local bowlStartDepth : 0.15 * (top - bowlBottom)
+		local yCounterPesudoBottom : mix bowlBottom top 0.333
+
+		include : dispiro
+			SerifedArcStart.LtrRhs SB Middle top Stroke [Math.max Hook bowlStartDepth] Stroke
+			g4 (RightSB - O) (top - [ArchDepthBOf (0.5 * (top - yCounterPesudoBottom)) Width]) [widths.rhs]
+			alsoThru 0.25 0.45 important
+			g4 (SB + Stroke * HVContrast) bowlBottom
+
+		if SLAB : begin
+			local sf : SerifFrame.fromDf [DivFrame 1] top bot
+			include sf.lt.outer
+			include sf.lb.fullSide
+
+	create-glyph 'Wynn' 0x1F7 : glyph-proc
+		include : MarkSet.capital
+		include : WynnShape 0 CAP
+
+	create-glyph 'wynn' 0x1BF : glyph-proc
+		include : MarkSet.p
+		include : WynnShape Descender XH

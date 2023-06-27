@@ -1,0 +1,184 @@
+export : define iotaBelowToLfTf : object
+	'iotaBelow' 'iotaLF'
+
+export : define ogonekBelowToTRTf : object
+	'ogonekBelow' 'ogonekTR'
+
+export : define ogonekBelowToTRTf_Y : object
+	'ogonekBelow' 'ogonekTR_Y'
+
+export : define upperGrekMarkToTonosTf : object
+	'tonosAbove'       'tonosGrekUpperTonos'
+	'variaAbove'       'variaGrekUpperTonos'
+	'oxiaAbove'        'oxiaGrekUpperTonos'
+	'graveAbove'       'variaGrekUpperTonos'
+	'acuteAbove'       'oxiaGrekUpperTonos'
+	'graveToneAbove'   'variaGrekUpperTonos'
+	'acuteToneAbove'   'oxiaGrekUpperTonos'
+	'commaAbove'       'commaGrekUpperTonos'
+	'revCommaAbove'    'revCommaGrekUpperTonos'
+	'psiliVaria'       'psiliVariaGrekUpperTonos'
+	'psiliOxia'        'psiliOxiaGrekUpperTonos'
+	'dasiaVaria'       'dasiaVariaGrekUpperTonos'
+	'dasiaOxia'        'dasiaOxiaGrekUpperTonos'
+	'psiliPerispomeni' 'psiliPerispomeniGrekUpperTonos'
+	'dasiaPerispomeni' 'dasiaPerispomeniGrekUpperTonos'
+
+export : define markCompositionTf : object
+	'commaAbove' : object
+		'graveAbove'        'psiliVaria'
+		'acuteAbove'        'psiliOxia'
+		'perispomeniAbove'  'psiliPerispomeni'
+		'cyrlPokrytieAbove' 'commaCyrlPorkytieAbove'
+	'revCommaAbove' : object
+		'graveAbove'        'dasiaVaria'
+		'acuteAbove'        'dasiaOxia'
+		'perispomeniAbove'  'dasiaPerispomeni'
+	'cyrlPsiliAbove' : object
+		'cyrlPokrytieAbove' 'cyrlPsiliPokrytieAbove'
+
+export : define decompOverrides : object
+	# Latvians use comma instead of cedillas in several letters.
+	# Record them as custom decomposition.
+	0x122  { 'G' 'commaBelow' }
+	0x123  { 'g' 'turnCommaAbove' }
+	0x136  { 'K' 'commaBelow' }
+	0x137  { 'k' 'commaBelow' }
+	0x13B  { 'L' 'commaBelow' }
+	0x13C  { 'l' 'commaBelow' }
+	0x145  { 'N' 'commaBelow' }
+	0x146  { 'n' 'commaBelow' }
+	0x156  { 'R' 'commaBelow' }
+	0x157  { 'r' 'commaBelow' }
+	0x1E10 { 'D' 'commaBelow' }
+	0x1E11 { 'd' 'commaBelow' }
+
+	# Spacing marks
+	0xA8   { 'markBaseSpace' 'dieresisAbove' }
+	0xAF   { 'markBaseSpace' 'macronAbove' }
+	0xB8   { 'markBaseSpace' 'cedillaBelow' }
+	0x2C2  { 'markBaseSpace' 'lessAbove' }
+	0x2C3  { 'markBaseSpace' 'greaterAbove' }
+	0x2C4  { 'markBaseSpace' 'upArrowHeadAbove' }
+	0x2C5  { 'markBaseSpace' 'downArrowHeadAbove' }
+	0x2C6  { 'markBaseSpace' 'circumflexAbove' }
+	0x2C7  { 'markBaseSpace' 'caronAbove' }
+	0x2C9  { 'markBaseSpace' 'macronAbove' }
+	0x2CA  { 'markBaseSpace' 'acuteAbove' }
+	0x2CB  { 'markBaseSpace' 'graveAbove' }
+	0x2CD  { 'markBaseSpace' 'macronBelow' }
+	0x2CE  { 'markBaseSpace' 'graveBelow' }
+	0x2CF  { 'markBaseSpace' 'acuteBelow' }
+	0x2D2  { 'markBaseSpace' 'rightHalfCircleOver' }
+	0x2D3  { 'markBaseSpace' 'leftHalfCircleOver' }
+	0x2D4  { 'markBaseSpace' 'upTackOver' }
+	0x2D5  { 'markBaseSpace' 'downTackOver' }
+	0x2D6  { 'markBaseSpace' 'plusOver' }
+	0x2D7  { 'markBaseSpace' 'minusOver' }
+	0x2D8  { 'markBaseSpace' 'breveAbove' }
+	0x2D9  { 'markBaseSpace' 'dotAbove' }
+	0x2DA  { 'markBaseSpace' 'ringAbove' }
+	0x2DB  { 'markBaseSpace' 'ogonekBelow' }
+	0x2DC  { 'markBaseSpace' 'tildeAbove' }
+	0x2DD  { 'markBaseSpace' 'doubleAcuteAbove' }
+	0x2DF  { 'markBaseSpace' 'crossAbove' }
+	0x2EC  { 'markBaseSpace' 'caronBelow' }
+	0x2ED  { 'markBaseSpace' 'dblOverlineAbove' }
+	0x2EF  { 'markBaseSpace' 'downArrowHeadBelow' }
+	0x2F0  { 'markBaseSpace' 'upArrowHeadBelow' }
+	0x2F1  { 'markBaseSpace' 'lessBelow' }
+	0x2F2  { 'markBaseSpace' 'greaterBelow' }
+	0x2F3  { 'markBaseSpace' 'ringBelow' }
+	0x2F7  { 'markBaseSpace' 'tildeBelow' }
+	0x2FF  { 'markBaseSpace' 'leftArrowBelow' }
+	0x37A  { 'markBaseSpace' 'iotaBelow' }
+	0x384  { 'markBaseSpace' 'tonosAbove' }
+	0x385  { 'markBaseSpace' 'dialytikaTonosAbove' }
+	0x1FBD { 'markBaseSpace' 'commaAbove' }
+	0x1FBE { 'markBaseSpace' 'iotaBelow' }
+	0x1FBF { 'markBaseSpace' 'commaAbove' }
+	0x1FC0 { 'markBaseSpace' 'perispomeniAbove' }
+	0x1FC1 { 'markBaseSpace' 'dieresisAbove' 'perispomeniAbove' }
+	0x1FED { 'markBaseSpace' 'dialytikaVariaAbove' }
+	0x1FEE { 'markBaseSpace' 'dialytikaOxiaAbove' }
+	0x1FEF { 'markBaseSpace' 'graveAbove' }
+	0x1FFD { 'markBaseSpace' 'acuteAbove' }
+	0x1FFE { 'markBaseSpace' 'revCommaAbove' }
+	0x2E2F { 'markBaseSpace' 'yerikAbove' }
+	0xA788 { 'markBaseSpace' 'circumflexBelow' }
+	0xA78A { 'markBaseSpace' 'equalOver' }
+	0xAB6A { 'markBaseSpace' 'leftTackOver' }
+	0xAB6B { 'markBaseSpace' 'rightTackOver' }
+
+	0x167  { 't' 'barOver' }
+
+	0x197  { 'I' 'barOver' }
+	0x19A  { 'l' 'barOver' }
+	0x1BB  { 'two.lnum' 'longBarOver' }
+	0x23A  { 'A' 'longSlashOver' }
+	0x23B  { 'C' 'longSlashOver' }
+	0x23C  { 'c' 'slashOver' }
+	0x23E  { 'T' 'longSlashOver' }
+	0x244  { 'U' 'longBarOver' }
+	0x246  { 'E' 'longSlashOver' }
+	0x247  { 'e' 'slashOver' }
+	0x248  { 'J' 'barOver' }
+	0x249  { 'j' 'barOver' }
+	0x24D  { 'r' 'barOver' }
+	0x24F  { 'y' 'longBarOver' }
+
+	0x386 { 'grek/Alpha'   'tonosGrekUpperTonos' }
+	0x388 { 'grek/Epsilon' 'tonosGrekUpperTonos' }
+	0x389 { 'grek/Eta'     'tonosGrekUpperTonos' }
+	0x38A { 'grek/Iota'    'tonosGrekUpperTonos' }
+	0x38C { 'grek/Omicron' 'tonosGrekUpperTonos' }
+	0x38E { 'grek/Upsilon' 'tonosGrekUpperTonos' }
+	0x38F { 'grek/Omega'   'tonosGrekUpperTonos' }
+	0x390 { 'grek/iota'    'dialytikaTonosAbove' }
+	0x3AC { 'grek/alpha'   'tonosAbove' }
+	0x3AD { 'grek/epsilon' 'tonosAbove' }
+	0x3AE { 'grek/eta'     'tonosAbove' }
+	0x3AF { 'grek/iota'    'tonosAbove' }
+	0x3B0 { 'grek/upsilon' 'dialytikaTonosAbove' }
+	0x3CC { 'grek/omicron' 'tonosAbove' }
+	0x3CD { 'grek/upsilon' 'tonosAbove' }
+	0x3CE { 'grek/omega'   'tonosAbove' }
+
+	0x47C  { 'cyrl/BroadOmega' 'cyrlPsiliAbove' 'cyrlPokrytieAbove' }
+	0x47D  { 'cyrl/broadOmega' 'cyrlPsiliAbove' 'cyrlPokrytieAbove' }
+
+	0x1D7C { 'latn/iota'    'barOver' }
+	0x1D7D { 'p'            'longBarOver' }
+	0x1D7F { 'latn/upsilon' 'longBarOver' }
+
+	0x1E9C { 'longs' 'shortSlashOver' }
+	0x1EDA { 'OHorn' 'acuteAbove' }
+	0x1EDB { 'oHorn' 'acuteAbove' }
+	0x1EDC { 'OHorn' 'graveAbove' }
+	0x1EDD { 'oHorn' 'graveAbove' }
+	0x1EDE { 'OHorn' 'hookAbove' }
+	0x1EDF { 'oHorn' 'hookAbove' }
+	0x1EE0 { 'OHorn' 'tildeAbove' }
+	0x1EE1 { 'oHorn' 'tildeAbove' }
+	0x1EE2 { 'OHorn' 'dotBelow' }
+	0x1EE3 { 'oHorn' 'dotBelow' }
+
+	0x1FD2 { 'grek/iota'    'dialytikaVariaAbove' }
+	0x1FD3 { 'grek/iota'    'dialytikaOxiaAbove' }
+	0x1FE2 { 'grek/upsilon' 'dialytikaVariaAbove' }
+	0x1FE3 { 'grek/upsilon' 'dialytikaOxiaAbove' }
+
+	0x2c61 { 'l' 'dblBarOver' }
+	0x2c65 { 'a' 'slashOver' }
+	0x2c66 { 't' 'longSlashOver' }
+
+	0xA74A { 'O' 'longBarOver' }
+	0xA74B { 'o' 'longBarOver' }
+	0xA7B8 { 'U' 'longSlashOver' }
+	0xA7B9 { 'u' 'slashOver' }
+	0xA7BB { 'a' 'EgyptologicalYodAbove' }
+	0xA7BD { 'i' 'EgyptologicalYodAbove' }
+	0xA7BF { 'u' 'EgyptologicalYodAbove' }
+
+	0xAB30 { 'scripta' 'longBarOver' }
+	0xAB3F { 'turnc'   'slashOver' }

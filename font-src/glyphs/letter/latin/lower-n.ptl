@@ -1,0 +1,262 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix clamp fallback SuffixCfg] from"../../../support/utils.mjs"
+import [Dotless CvDecompose MathSansSerif Joining] from"../../../support/gr.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Lower-N : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Mark-Shared-Metrics : markHalfStroke
+	glyph-block-import Letter-Shared : CreateAccentedComposition
+	glyph-block-import Letter-Shared-Shapes : CurlyTail nShoulder nShoulderKnots nShoulderMask
+	glyph-block-import Letter-Shared-Shapes : RightwardTailedBar DToothlessRise DMBlend
+	glyph-block-import Letter-Shared-Shapes : CyrDescender PalatalHook RetroflexHook EngHook
+
+	define [AdjustTrailingAnchor] : glyph-proc
+		define trAnchor currentGlyph.baseAnchors.trailing
+		if trAnchor : set-base-anchor 'trailing' (trAnchor.x + SideJut) trAnchor.y
+
+	define [NHTB top] : VBar.l SB 0 top
+	define [NTopLeftSerif top] : tagged 'serifLT' : HSerif.lt SB top SideJut
+	define [NBottomLeftSerif y] : tagged 'serifLB' : HSerif.mb (SB + HalfStroke * HVContrast) y Jut
+	define [NBottomLeftOuterSerif y] : tagged 'serifLB' : HSerif.lb SB y SideJut
+
+	define [NBottomRightSerifUpright y] : glyph-proc
+		include : tagged 'serifRB' : HSerif.mb (RightSB - HalfStroke * HVContrast) y Jut
+		include : AdjustTrailingAnchor
+	define [NBottomRightSerifItalic y] : glyph-proc
+		include : tagged 'serifRB' : HSerif.rb RightSB y SideJut
+		include : AdjustTrailingAnchor
+
+	define [EaredBody top left right yBR sw] : glyph-proc
+		include : VBar.l left 0 top sw
+		include : nShoulder
+			left -- (left + sw * HVContrast)
+			right -- right
+			top -- top
+			bottom -- yBR
+			fine -- ShoulderFine
+			stroke -- sw
+
+	define [EarlessCornerBody top left right yBR sw] : glyph-proc
+		include : VBar.l left 0 (top - DToothlessRise) sw
+		include : dispiro
+			widths.rhs sw
+			g4 left (top - DToothlessRise)
+			g4 ([mix left right 0.5] - CorrectionOMidS) (top - O)
+			archv
+			flat right (top - SmallArchDepthB)
+			curl right yBR [heading Downward]
+
+	define [EarlessRoundedBody top left right yBR sw] : glyph-proc
+		include : dispiro
+			widths.rhs sw
+			flat left 0 [heading Upward]
+			curl left (top - SmallArchDepthA)
+			arcvh
+			g4 ([mix left right 0.5] - CorrectionOMidS) (top - O)
+			archv
+			flat right (top - SmallArchDepthB)
+			curl right yBR [heading Downward]
+
+	define [EndingTail right yBot yBR sw] : glyph-proc
+		include : RightwardTailedBar right yBot yBR sw
+		include : AdjustTrailingAnchor
+
+	define NConfig : SuffixCfg.weave
+		object # body
+			""                  EaredBody
+			earlessCorner       EarlessCornerBody
+			earlessRounded      EarlessRoundedBody
+			earlessCornerHTB    EarlessCornerBody
+			earlessRoundedHTB   EarlessRoundedBody
+		object # terminal
+			straight            0
+			tailed              1
+		function [body tail] : object # serifs
+			serifless           { nothing        nothing  nothing }
+			topLeftSerifed      { NTopLeftSerif  nothing  nothing }
+			motionSerifed       { NTopLeftSerif  nothing  [if (tail != 'tailed') NBottomRightSerifItalic] }
+			serifed : list
+				match body
+					([Just "earlessCorner"] || [Just "earlessRounded"])       nothing
+					([Just "earlessCornerHTB"] || [Just "earlessRoundedHTB"]) NHTB
+					__                                                        NTopLeftSerif
+				begin NBottomLeftSerif
+				if (tail != 'tailed') NBottomRightSerifUpright
+
+	foreach { suffix { Body tailed {sLT sLB sRB} } } [Object.entries NConfig] : do
+		create-glyph "n.\(suffix)" : glyph-proc
+			include : MarkSet.e
+			set-base-anchor 'trailing' RightSB 0
+			include : Body XH SB RightSB [if tailed (XH - SmallArchDepthB + O) 0] Stroke
+			if tailed : include : EndingTail RightSB 0 (XH - SmallArchDepthB) Stroke
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+			if sRB : include : sRB 0
+
+		create-glyph "eng.\(suffix)" : glyph-proc
+			include : MarkSet.p
+			include : Body XH SB RightSB 0 Stroke
+			include : EngHook RightSB 0 Descender
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+
+		create-glyph "nHookBottom.\(suffix)" : glyph-proc
+			include : MarkSet.e
+			include : Body XH SB RightSB 0 Stroke
+			include : RetroflexHook.rExt RightSB 0
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+
+		create-glyph "nCurlyTail.\(suffix)" : glyph-proc
+			include : MarkSet.e
+			local fine : AdviceStroke 4
+			local rinner : clamp (Width * 0.065) (XH * 0.05) (fine * 0.35)
+			local sw : AdviceStroke 3
+			local m1 : Math.min RightSB (Width - rinner * 2 - fine - OX)
+			local x2 : mix SB m1 0.5
+			local y2 : -fine
+			include : Body XH SB m1 (rinner * 2 + fine) sw
+			include : dispiro
+				straight.down.start m1 (rinner * 2 + fine - O) [widths.rhs.heading sw Downward]
+				CurlyTail fine rinner m1 0 (m1 + rinner * 2 + fine) x2 y2
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+
+		create-glyph "NExt.\(suffix)" : glyph-proc
+			include : MarkSet.capDesc
+			include : Body CAP SB RightSB [if tailed (CAP - SmallArchDepthB + O) Descender] Stroke
+			if tailed : include : EndingTail RightSB Descender (CAP - SmallArchDepthB) Stroke
+			if sLT : include : sLT CAP
+			if sLB : include : sLB 0
+			if sRB : include : sRB Descender
+
+		create-glyph "nExt.\(suffix)" : glyph-proc
+			include : MarkSet.p
+			include : Body XH SB RightSB [if tailed (XH - SmallArchDepthB + O) Descender] Stroke
+			if tailed : include : EndingTail RightSB Descender (XH - SmallArchDepthB) Stroke
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+			if sRB : include : sRB Descender
+
+		create-glyph "nCrossedTail.\(suffix)" : glyph-proc
+			include : MarkSet.e
+			local fine : AdviceStroke 4
+			local rinner : XH * 0.15 - fine * 0.75
+			local sw : AdviceStroke 3
+			local m1 : RightSB - sw * HVContrast
+			local m2 : [mix SB RightSB 0.5] - 0.5 * fine * HVContrast
+			local x2 : RightSB + SideJut
+			local y2 : rinner * 2 + fine - O
+			include : Body XH SB RightSB (y2 + O) sw
+			include : dispiro
+				straight.down.start RightSB y2 [widths.rhs.heading sw Downward]
+				CurlyTail fine rinner m1 0 m2 x2 y2 (adj -- 0.2)
+			if sLT : include : sLT XH
+			if sLB : include : [if (m2 - (SB + HalfStroke * HVContrast + Jut) > 0.01 * Width) NBottomLeftSerif NBottomLeftOuterSerif] 0
+
+		create-glyph "engCrossedTail.\(suffix)" : glyph-proc
+			include : MarkSet.p
+			include : Body XH SB RightSB 0 Stroke
+			local fine : AdviceStroke 3.5
+			local rinner : (-Descender - 2 * fine) / 3
+			local m1 : RightSB - Stroke * HVContrast
+			local x2 : mix RightSB m1 0.25
+			local y2 : Descender + O
+			include : dispiro
+				straight.down.start RightSB (-O) [widths.rhs.heading Stroke Downward]
+				CurlyTail fine rinner m1 Descender (m1 - HookX) x2 y2
+			if sLT : include : sLT XH
+			if sLB : include : sLB 0
+
+		create-glyph "RInsular.\(suffix)" : glyph-proc
+			include : MarkSet.capDesc
+			include : Body CAP SB RightSB (0 + TailY - HalfStroke) Stroke
+			include : RetroflexHook.rExt RightSB (0 + TailY - HalfStroke)
+			include : VBar.l SB Descender 0
+			if sLT : include : sLT CAP
+			if sLB : include : sLB Descender
+
+		create-glyph "rInsular.\(suffix)" : glyph-proc
+			include : MarkSet.p
+			include : Body XH SB RightSB (0 + TailY - HalfStroke) Stroke
+			include : RetroflexHook.rExt RightSB (0 + TailY - HalfStroke)
+			include : VBar.l SB Descender 0
+			if sLT : include : sLT XH
+			if sLB : include : sLB Descender
+
+	select-variant 'n' 'n'
+	link-reduced-variant 'n/sansSerif' 'n' MathSansSerif
+	link-reduced-variant 'n/descBase' 'n'
+	select-variant 'cyrl/pe.italic' (shapeFrom -- 'n')
+	select-variant 'cyrl/peItalicDescBase' (shapeFrom -- 'n')
+	alias 'cyrl/pe.BGR' null 'n'
+
+	select-variant 'eng' 0x14B
+	link-reduced-variant 'eng/phoneticRight' 'eng'
+	select-variant 'nHookBottom' 0x273 (follow -- 'eng')
+	select-variant 'nCurlyTail' 0x235 (follow -- 'eng')
+	select-variant 'nCrossedTail' 0xAB3B (follow -- 'eng')
+	select-variant 'engCrossedTail' 0xAB3C (follow -- 'eng')
+	select-variant 'RInsular' 0xA782 (follow -- 'eng')
+	select-variant 'rInsular' 0xA783 (follow -- 'eng')
+	select-variant 'NExt' 0x220 (follow -- 'n')
+	select-variant 'nExt' 0x19E (follow -- 'n')
+
+	CreateAccentedComposition 'nTildeOver' 0x1D70 'n' 'tildeOverWide'
+
+	derive-composites 'nDescender' 0xA791 'n/descBase' [CyrDescender.rSideJut RightSB 0]
+	derive-composites 'nPalatalHook' 0x1D87 'n/descBase' [PalatalHook.rSideJut RightSB 0]
+	derive-composites 'cyrl/peDescender.italic' null 'cyrl/peItalicDescBase' [CyrDescender.rSideJut RightSB 0]
+
+	do "n with Apostrophe"
+		derive-glyphs 'nApostrophe/comma' null 'commaAbove/asPunctuation' : function [src gr] : glyph-proc
+			include : WithTransform [Translate (Width + SB - Middle) 0]
+				refer-glyph src
+
+		derive-composites 'nApostrophe' 0x149 'n' 'nApostrophe/comma'
+
+	derive-glyphs 'nLTail' 0x272 'n' : lambda [src srl] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		eject-contour 'serifLB'
+		include : PalatalHook.lExt SB 0
+
+	# eta
+	create-glyph 'grek/eta' 0x3B7 : glyph-proc
+		include : MarkSet.p
+		set-base-anchor 'lf' (SB + HalfStroke) 0
+
+		include : nShoulder
+			left -- (SB + Stroke * HVContrast)
+			right -- RightSB
+			bottom -- Descender
+		include : VBar.l SB 0 XH
+		if SLAB : begin
+			include : tagged 'serifLT' : HSerif.lt SB XH SideJut
+
+
+	glyph-block-import Letter-Blackboard : BBS BBD BBBarLeft
+	create-glyph 'mathbb/n' 0x1D55F : glyph-proc
+		local df : DivFrame 1 2
+		local bbs BBS
+		local bbd BBD
+		set-width df.width
+		include : df.markSet.e
+		include : BBBarLeft df.leftSB 0 XH
+		include : HBar.b (df.rightSB - bbd) df.rightSB 0 bbs
+		include : nShoulder
+			stroke -- bbs
+			left -- (df.leftSB + bbd + bbs * HVContrast)
+			right -- df.rightSB
+			fine -- ShoulderFine
+		include : intersection
+			VBar.r (df.rightSB - bbd) 0 XH bbs
+			nShoulderMask
+				stroke -- bbs
+				left -- (df.leftSB + bbd + bbs * HVContrast + 1)
+				right -- (df.rightSB - 1)
+				top -- (XH - 1)
+				fine -- ShoulderFine

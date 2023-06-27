@@ -1,0 +1,195 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix fallback SuffixCfg] from"../../../support/utils.mjs"
+import [Dotless CvDecompose MathSansSerif] from"../../../support/gr.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Lower-H : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Mark-Shared-Metrics : markExtend
+	glyph-block-import Mark-Above : aboveMarkMid
+	glyph-block-import Mark-Below : belowMarkMid
+	glyph-block-import Letter-Shared-Shapes : RightwardTailedBar nShoulder nShoulderMask CyrDescender
+	glyph-block-import Letter-Shared-Shapes : TopHook PalatalHook EngHook RetroflexHook
+
+	define [SmallHSerifs tailed hookTop] : glyph-proc : begin
+		include : SmallHLeftSerifs tailed hookTop
+		if [not tailed] : include : tagged 'serifRB' : HSerif.mb (RightSB - HalfStroke * HVContrast) 0 Jut
+
+	define [SmallHLeftSerifs tailed hookTop] : glyph-proc : begin
+		if [not hookTop] : include : tagged 'serifLT' : HSerif.lt SB Ascender SideJut
+		include : tagged 'serifLB' : HSerif.mb (SB + HalfStroke * HVContrast) 0 Jut
+
+	define [SmallHMotionSerifs tailed hookTop] : glyph-proc
+		if [not hookTop] : include : tagged 'serifLT' : HSerif.lt SB Ascender SideJut
+		if [not tailed] : include : tagged 'serifRB' : HSerif.rb RightSB 0 SideJut
+
+	define [SmallHTopLeftSerifs tailed hookTop] : glyph-proc
+		if [not hookTop] : include : tagged 'serifLT' : HSerif.lt SB Ascender SideJut
+
+	define [HBar.mOverlay fHasTopSerif] : glyph-proc
+		local barSpaceTop : Ascender - [if fHasTopSerif Stroke 0]
+		local s : Math.min OverlayStroke (0.625 * (barSpaceTop - XH))
+		local xOverlayStart : mix SB 0 0.7
+		local xOverlayEnd : mix SB RightSB 0.5
+		local yOverlay : [mix XH barSpaceTop 0.45] - s / 2
+		include : dispiro
+			widths.lhs s
+			corner xOverlayStart yOverlay
+			corner (SB + HalfStroke * HVContrast) yOverlay
+		include : dispiro
+			widths.lhs OverlayStroke
+			corner (SB + HalfStroke * HVContrast) yOverlay
+			corner xOverlayEnd yOverlay
+
+	define HConfig : SuffixCfg.weave
+		object # tail
+			straight false
+			tailed   true
+		object # serifs
+			serifless      { false no-shape            }
+			serifed        { true  SmallHSerifs        }
+			motionSerifed  { true  SmallHMotionSerifs  }
+			topLeftSerifed { true  SmallHTopLeftSerifs }
+
+	foreach { suffix { fTailed {fHasTopSerif Serifs} } } [Object.entries HConfig] : do
+		create-glyph "h.\(suffix)" : glyph-proc
+			include : MarkSet.b
+			include : VBar.l SB 0 Ascender
+			include : nShoulder
+				left -- (SB + Stroke * HVContrast)
+				right -- RightSB
+				bottom -- [if fTailed (XH - SmallArchDepthB + O) 0]
+			if fTailed : include : RightwardTailedBar RightSB 0 (XH - SmallArchDepthB)
+			include : Serifs fTailed false
+
+		create-glyph "h/circumflexBase.\(suffix)" : glyph-proc
+			include [refer-glyph "h.\(suffix)"] AS_BASE ALSO_METRICS
+			set-base-anchor 'above' (SB + HVContrast * HalfStroke) Ascender
+
+		create-glyph "hBar.\(suffix)" : glyph-proc
+			include [refer-glyph "h.\(suffix)"] AS_BASE ALSO_METRICS
+			include : HBar.mOverlay fHasTopSerif
+
+		create-glyph "hHookTop.\(suffix)" : glyph-proc
+			include : MarkSet.b
+			include : TopHook.lBarInner SB 0 Ascender
+			include : nShoulder
+				left -- (SB + Stroke * HVContrast)
+				right -- RightSB
+				bottom -- [if fTailed (XH - SmallArchDepthB + O) 0]
+			if fTailed : include : RightwardTailedBar RightSB 0 (XH - SmallArchDepthB)
+			include : Serifs fTailed true
+
+		create-glyph "hHookTopLTail.\(suffix)" : glyph-proc
+			include : MarkSet.if
+			include : refer-glyph "hHookTop.\(suffix)"
+			eject-contour 'serifRB'
+			include : EngHook RightSB 0 Descender
+
+		create-glyph "heng.\(suffix)" : glyph-proc
+			include : MarkSet.if
+			include : refer-glyph "h.\(suffix)"
+			eject-contour 'serifRB'
+			include : EngHook RightSB 0 Descender
+
+		create-glyph "hengBar.\(suffix)" : glyph-proc
+			include [refer-glyph "heng.\(suffix)"] AS_BASE ALSO_METRICS
+			include : HBar.mOverlay fHasTopSerif
+
+
+	select-variant 'h' 'h'
+	select-variant 'h/circumflexBase' (follow -- 'h')
+	link-reduced-variant 'h/descBase' 'h'
+	link-reduced-variant 'h/sansSerif' 'h' MathSansSerif
+
+	derive-glyphs 'hCircumflex' 0x125 'h/circumflexBase' : lambda [src gr] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		include [refer-glyph "circumflexAbove"]
+
+
+	derive-glyphs 'hCaron' 0x21F 'h/circumflexBase' : lambda [src gr] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		include [refer-glyph "caronAbove"]
+
+	select-variant 'hBar' 0x127 (follow -- 'h')
+	turned 'turnh' 0x265 'h' Middle (XH / 2) [MarkSet.p]
+
+	select-variant 'hHookTop' 0x266
+	select-variant 'hHookTopLTail' 0x267
+	select-variant 'heng' 0xA727
+	select-variant 'cyrl/dje' 0x452 (follow -- 'heng') (shapeFrom -- 'hengBar')
+
+	select-variant 'cyrl/shha' 0x4BB (shapeFrom -- 'h')
+	derive-composites 'cyrl/shhaDescender' 0x527 'cyrl/shha' [CyrDescender.rSideJut RightSB 0]
+
+	derive-composites 'hPalatalHook' 0xA795 'h/descBase' [PalatalHook.rSideJut RightSB 0]
+	derive-composites 'hDescender' 0x2C68 'h/descBase' [CyrDescender.rSideJut RightSB 0]
+
+	create-glyph 'hookturnh' 0x2AE : glyph-proc
+		include : nShoulder
+			left -- (SB + Stroke * HVContrast)
+			right -- RightSB
+			bottom -- (TailY + HalfStroke)
+		include : VBar.l SB 0 Ascender
+		include : RetroflexHook.rExt RightSB (TailY + HalfStroke)
+		include : FlipAround Middle (XH / 2)
+		include : MarkSet.p
+		if SLAB : begin
+			include : HSerif.lt (RightSB - Stroke * HVContrast) XH SideJut
+			include : HSerif.mb (RightSB - HalfStroke * HVContrast) Descender Jut
+
+	create-glyph 'hookturnhrtail' 0x2AF : glyph-proc
+		include : nShoulder
+			left -- (SB + Stroke * HVContrast)
+			right -- RightSB
+			bottom -- (TailY + HalfStroke)
+		include : VBar.l SB 0 XH
+		include : RetroflexHook.rExt RightSB (TailY + HalfStroke)
+		include : FlipAround Middle (XH / 2)
+		include : RetroflexHook.rExt RightSB (Descender + TailY + HalfStroke) (yAttach -- 0)
+		include : MarkSet.p
+		if SLAB : begin
+			include : HSerif.lt (RightSB - Stroke * HVContrast) XH SideJut
+
+	derive-multi-part-glyphs 'hDot' 0x1E23 { 'h' 'dotAbove' } : lambda [srcs gr] : glyph-proc
+		local { base mark } srcs
+		include [refer-glyph base] AS_BASE ALSO_METRICS
+		include : WithTransform [ApparentTranslate (HVContrast * HalfStroke) (XH - Ascender)] [refer-glyph mark]
+
+	derive-glyphs 'hCedilla' 0x1E29 'h' : lambda [src gr] : glyph-proc
+		local shift : Width + SB - Middle + HalfStroke * HVContrast
+		include [refer-glyph 'cedillaBelow']
+		include : ApparentTranslate shift 0
+		include [refer-glyph src]
+		include : MarkSet.if
+		set-base-anchor 'belowBraceL' ((-Middle) + shift - 0.5 * markExtend) belowMarkMid
+		set-base-anchor 'belowBraceR' ((-Middle) + shift + 0.5 * markExtend) belowMarkMid
+
+	alias 'cyrl/tshe' 0x45B 'hBar'
+
+	glyph-block-import Letter-Blackboard : BBS BBD BBBarLeft
+	create-glyph 'mathbb/h' 0x1D559 : glyph-proc
+		local df : DivFrame 1 2
+		local bbs BBS
+		local bbd BBD
+		set-width df.width
+		include : df.markSet.e
+		include : BBBarLeft df.leftSB 0 Ascender
+		include : union
+			HBar.b (df.rightSB - bbd) df.rightSB 0 bbs
+			nShoulder
+				stroke -- bbs
+				left -- (df.leftSB + bbd + bbs * HVContrast)
+				right -- df.rightSB
+				fine -- ShoulderFine
+			intersection
+				VBar.r (df.rightSB - bbd) 0 XH bbs
+				nShoulderMask
+					stroke -- bbs
+					left -- (df.leftSB + bbd + bbs * HVContrast + 1)
+					right -- (df.rightSB - 1)
+					top -- (XH - 1)
+					fine -- ShoulderFine

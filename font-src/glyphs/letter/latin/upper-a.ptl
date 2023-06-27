@@ -1,0 +1,165 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix fallback SuffixCfg] from"../../../support/utils.mjs"
+import [Dotless CvDecompose MathSansSerif] from"../../../support/gr.mjs"
+import [maskBits bitOr] from"../../../support/util/mask-bit.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Upper-A : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Mark-Shared-Metrics : markHalfStroke
+	glyph-block-import Letter-Shared : SetGrekUpperTonos CreateOgonekComposition
+	glyph-block-import Letter-Shared-Shapes : SerifFrame
+	glyph-block-import Letter-Latin-V : VShapeOutline VShape
+
+	define SLAB-NONE    0
+	define SLAB-TOP     1
+	define SLAB-LEFT    2
+	define SLAB-RIGHT   4
+
+	glyph-block-export AMaskShape
+	define [AMaskShape] : with-params [df fBarStraight top sw] : new-glyph : glyph-proc
+		include : VShapeOutline df fBarStraight top sw
+		include : FlipAround (df.width / 2) (top / 2)
+
+	define [ABarPosition fBaseSlabs top] : mix [if fBaseSlabs Stroke 0] top (XH / 2 / CAP)
+
+	glyph-block-export AConfig
+	define AConfig : SuffixCfg.weave
+		object
+			straight true
+			curly    false
+
+		object
+			serifless    SLAB-NONE
+			topSerifed   SLAB-TOP
+			baseSerifed  [bitOr SLAB-LEFT SLAB-RIGHT]
+			triSerifed   [bitOr SLAB-TOP SLAB-LEFT SLAB-RIGHT]
+
+	define [ASerifs df top sw slabKind] : glyph-proc : begin
+		local sf : SerifFrame.fromDf df top 0
+		if [maskBits slabKind SLAB-LEFT] : include sf.lb.full
+		if [maskBits slabKind SLAB-RIGHT] : include sf.rb.full
+		if [maskBits slabKind SLAB-TOP] : include : intersection [MaskLeft df.middle]
+			if [maskBits slabKind : bitOr SLAB-LEFT SLAB-RIGHT]
+			: then : HSerif.lt df.middle top (MidJutSide + sw * HVContrast * 0.25) sf.swSerif
+			: else : HSerif.lt df.middle top [mix MidJutSide LongJut 0.5]          sf.swSerif
+
+	glyph-block-export ALetterShape
+	define [ALetterShape] : with-params [df fStraightBar slabKind top sw] : new-glyph : glyph-proc
+		include : VShape df fStraightBar top sw
+		include : FlipAround df.middle (top / 2)
+		define yBar : ABarPosition [maskBits slabKind : bitOr SLAB-LEFT SLAB-RIGHT] top
+		include : tagged 'crossBar'
+			intersection [HBar.t 0 df.width yBar] [AMaskShape df fStraightBar top sw]
+		include : ASerifs df top sw slabKind
+
+	foreach { suffix { fStraightBar slabKind } } [Object.entries AConfig] : do
+		define [AShapeImpl mak top fGrek fOverlays] : glyph-proc
+			local df : DivFrame 1
+			include : df.markSet.(mak)
+			set-base-anchor 'trailing' df.rightSB 0
+			if fGrek : include : SetGrekUpperTonos
+				(df.rightSB - df.leftSB) * [if [maskBits slabKind SLAB-TOP] 0 0.2]
+
+			include : ALetterShape
+				df  -- df
+				top -- top
+				sw  -- Stroke
+				fStraightBar -- fStraightBar
+				slabKind -- slabKind
+
+			if fOverlays : begin
+				define yBar : ABarPosition [maskBits slabKind : bitOr SLAB-LEFT SLAB-RIGHT] top
+				eject-contour 'crossBar'
+				include : HOverlayBar [mix 0 SB 0.5] [mix Width RightSB 0.5] (yBar - HalfStroke + 0.5 * OverlayStroke)
+				include : HOverlayBar [mix 0 SB 0.5] [mix Width RightSB 0.5] [mix yBar top 0.25]
+
+		create-glyph "A.\(suffix)" : AShapeImpl "capital" CAP
+		create-glyph "grek/Alpha.\(suffix)" : AShapeImpl "capital" CAP true
+		create-glyph "smcpA.\(suffix)" : AShapeImpl "e" XH
+
+		create-glyph "currency/australSign.\(suffix)" : AShapeImpl "capital" CAP false true
+
+	select-variant 'A' 'A'
+	link-reduced-variant 'A/sansSerif' 'A' MathSansSerif
+	select-variant 'smcpA' 0x1D00 (follow -- 'A')
+	select-variant 'grek/Alpha' 0x391 (follow -- 'A')
+	select-variant 'currency/australSign' 0x20B3 (follow -- 'A')
+	link-reduced-variant 'grek/Alpha/sansSerif' 'grek/Alpha' MathSansSerif (follow -- 'A/sansSerif')
+	alias 'cyrl/A' 0x410 'A'
+	turned 'turnA' 0x2C6F 'A' Middle (CAP / 2)
+
+	# Lambda
+	glyph-block-export LambdaShape
+	define [LambdaShape] : with-params [df fBarStraight top sw [slab SLAB]] : glyph-proc
+		include : VShape df fBarStraight top sw
+		include : FlipAround df.middle (top / 2)
+		local sf : SerifFrame.fromDf df top 0
+		include : NeedSlab slab : composite-proc sf.lb.full sf.rb.full
+
+	create-glyph 'grek/Lambda.straight' : composite-proc [MarkSet.capital]
+		LambdaShape [DivFrame 1] true  CAP Stroke
+	create-glyph 'grek/Lambda.curly' : composite-proc [MarkSet.capital]
+		LambdaShape [DivFrame 1] false CAP Stroke
+	create-glyph 'grek/smcpLambda.straight' : composite-proc [MarkSet.e]
+		LambdaShape [DivFrame 1] true  XH  Stroke
+	create-glyph 'grek/smcpLambda.curly' : composite-proc [MarkSet.e]
+		LambdaShape [DivFrame 1] false XH  Stroke
+
+	select-variant 'grek/Lambda' 0x39B
+	select-variant 'grek/smcpLambda' 0x1D27 (follow -- 'grek/Lambda')
+	alias 'latinLambda' 0x245 'grek/Lambda'
+
+	# Delta
+	glyph-block-export DeltaShape
+	define [DeltaShape] : with-params [df top sw fBarStraight] : union
+		LambdaShape
+			df -- df
+			fBarStraight -- fBarStraight
+			top -- top
+			sw -- sw
+			slab -- false
+		intersection
+			HBar.b 0 df.width 0 sw
+			AMaskShape df fBarStraight top sw
+
+	create-glyph 'grek/Delta.straight' : composite-proc [MarkSet.capital]
+		DeltaShape
+			df -- [DivFrame 1]
+			fBarStraight -- true
+			top -- CAP
+			sw -- Stroke
+	create-glyph 'grek/Delta.curly' : composite-proc [MarkSet.capital]
+		DeltaShape
+			df -- [DivFrame 1]
+			fBarStraight -- false
+			top -- CAP
+			sw -- Stroke
+
+	select-variant 'grek/Delta' 0x394
+
+	derive-glyphs 'cyrl/De.BGR' null 'grek/Delta' : function [src gr] : glyph-proc
+		include [refer-glyph src] AS_BASE ALSO_METRICS
+		local descenderOverflow : if SLAB SideJut ((RightSB - SB) * 0.075)
+		local xCutLeft SB
+		local xCutRight RightSB
+		include : HBar.b (xCutLeft - descenderOverflow) (xCutRight + descenderOverflow) 0
+		include : VBar.l (xCutLeft - descenderOverflow) (-LongJut + HalfStroke) Stroke
+		include : VBar.r (xCutRight + descenderOverflow) (-LongJut + HalfStroke) Stroke
+
+	glyph-block-import Letter-Blackboard : BBS BBD
+	glyph-block-import Letter-Latin-V : BBVShape BBVInnerMaskShape
+
+	create-glyph 'mathbb/A' 0x1D538 : glyph-proc
+		include : MarkSet.capital
+		include : union
+			BBVShape SB RightSB 1 1 CAP
+			intersection
+				BBVInnerMaskShape SB RightSB 1 1 CAP
+				HBar.t 0 Width (CAP - XH / 2) BBS
+		include : FlipAround Middle (CAP / 2)
+
+	CreateOgonekComposition 'AOgonek' 0x104 'A'

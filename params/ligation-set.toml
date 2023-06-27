@@ -1,0 +1,622 @@
+[simple.center-ops]
+ligGroup =  'center-ops'
+samples = [":=", ":-", ":+", "<*", "<*>", "*>", "+:", "-:", "=:", "<***>", "<:", ":>", "*-", "-*", "*=", "=*", "*+", "+*"]
+desc = 'Vertically align some of the operators (like `*`) to the center position it is before or after a "center" operator (like `+`)'
+
+[simple.center-op-trigger-plus-minus-l]
+ligGroup = 'center-op-trigger-plus-minus-l'
+samples = ["*+", "*-", ":+", ":-", ".+", ".-"]
+desc = 'Plus (`+`) and Minus (`-`) will trigger other operator characters at left to be centered'
+
+[simple.center-op-trigger-plus-minus-r]
+ligGroup = 'center-op-trigger-plus-minus-r'
+samples = ["+*", "-*", "+:", "-:", "+.", "-."]
+desc = 'Plus (`+`) and Minus (`-`) will trigger other operator characters at right to be centered'
+
+[simple.center-op-trigger-equal-l]
+ligGroup = 'center-op-trigger-equal-l'
+samples = ["*=", ":=", ".="]
+desc = 'Equal (`=`) will trigger other operator characters at left to be centered'
+
+[simple.center-op-trigger-equal-r]
+ligGroup = 'center-op-trigger-equal-r'
+samples = ["=*", "=:", "=."]
+desc = 'Equal (`=`) will trigger other operator characters at right to be centered'
+
+[simple.center-op-trigger-bar-l]
+ligGroup = 'center-op-trigger-bar-l'
+samples = ["*|", ":|"]
+desc = 'Bars (`|`) will trigger other operator characters at left to be centered'
+
+[simple.center-op-trigger-bar-r]
+ligGroup = 'center-op-trigger-bar-r'
+samples = ["|*", "|:"]
+desc = 'Bars (`|`) will trigger other operator characters at right to be centered'
+
+[simple.center-op-trigger-angle-inside]
+ligGroup = 'center-op-trigger-angle-inside'
+samples = ["<:", "<:>", ":>", "<*", "<*>", "*>", "<.", "<.>", ".>"]
+desc = 'Less (`<`) and Greater (`>`) will trigger other operator characters at inside to be centered'
+
+[simple.center-op-trigger-angle-outside]
+ligGroup = 'center-op-trigger-angle-outside'
+samples = [">*", "*<"]
+desc = 'Less (`<`) and Greater (`>`) will trigger other operator characters at outside to be centered'
+
+[simple.center-op-influence-dot]
+ligGroup =  "center-op-influence-dot"
+samples = ["<.", "<.>", ".>"]
+desc = 'Treat dot (`.`) as operator and perform chained centering'
+
+[simple.center-op-influence-colon]
+ligGroup =  "center-op-influence-colon"
+samples = ["<:", "<:>", ":>", ":=", "=:", ":-", "-:"]
+desc = 'Treat colon (`:`) as operator and perform chained centering'
+
+
+
+[simple.arrow-l]
+ligGroup =  "arrow-l"
+samples = ["<--", "<---", "<<-", "<-", "<->", "<-->", "<--->", "<---->", "<=", "<==", "<===", "<<=", "<=>", "<==>", "<===>", "<====>", "<~~", "<~", "<~>", "<=<", "<-<"]
+desc = 'Enable ligation set that forms left-pointing arrows'
+
+[simple.arrow-r]
+ligGroup =  "arrow-r"
+samples = ["->", "->>", "-->", "--->", "<->", "<-->", "<--->", "<---->", "=>", "=>>", "==>", "===>", "<=>", "<==>", "<===>", "<====>", "<~>", "~>", "~~>", "-------->", ">=>", ">->"]
+desc = 'Enable ligation set that forms right-pointing arrows'
+
+[simple.counter-arrow-l]
+ligGroup =  "counter-arrow-l"
+samples = ["-<<", "-<", "-<-", "=<<", "=<", "=<=", "<=<", "-<<", "-<", "-<-", "=<<", "=<", "=<="]
+desc = 'Enable ligation that produces left-pointing counter-arrows'
+
+[simple.counter-arrow-r]
+ligGroup =  "counter-arrow-r"
+samples = ["->-", ">-", ">>-", "=>=", ">=>", "->-", ">-", ">>-", ">>=", "=>="]
+desc = 'Enable ligation that produces right-pointing counter-arrows'
+
+[simple.trig]
+ligGroup =  "trig"
+samples = ["<|", "<|>", "|>"]
+desc = 'Enable ligation for `<|`, `|>` , `<||`, and other bar-and-angle-bracket symbols'
+
+[simple.eqeqeq]
+ligGroup =  "eqeqeq"
+samples = ["==="]
+sampleRank = 2
+desc = 'Enable special ligation for `===` with triple lines'
+
+[simple.eqeq]
+ligGroup =  "eqeq"
+samples = ["==", "==="]
+desc = 'Enable ligation for `==` and `===`'
+
+[simple.lteq]
+ligGroup =  "lteq"
+samples = ["<="]
+sampleRank = 2
+desc = 'Enable ligation for `<=` as less-than-or-equal sign'
+
+[simple.eqlt]
+ligGroup =  "eqlt"
+samples = ["=<"]
+sampleRank = 2
+desc = 'Enable ligation for `=<` as less-than-or-equal sign'
+
+[simple.gteq]
+ligGroup =  "gteq"
+samples = [">="]
+sampleRank = 2
+desc = 'Enable ligation for `>=` as greater-than-or-equal sign'
+
+[simple.exeqeqeq]
+ligGroup =  "exeqeqeq"
+samples = ["!==="]
+sampleRank = 3
+desc = 'Enable special ligation for `!===` with triple lines'
+
+[simple.exeqeq]
+ligGroup =  "exeqeq"
+samples = ["!=="]
+sampleRank = 3
+desc = 'Enable special ligation for `!==` with triple lines'
+
+[simple.eqexeq]
+ligGroup =  "eqexeq"
+samples = ["=!="]
+desc = 'Enable special ligation for `=!=` with triple lines'
+
+[simple.eqexeq-dl]
+ligGroup =  "eqexeq-dl"
+samples = ["=!="]
+desc = 'Enable special ligation for `=!=` with double lines'
+
+[simple.exeq]
+ligGroup =  "exeq"
+samples = ["!=", "!==", "!==="]
+desc = 'Enable ligation for `!=` and `!==`'
+
+[simple.tildeeq]
+ligGroup =  "tildeeq"
+samples = ["~="]
+desc = 'Enable ligation for `~=` as inequality'
+
+[simple.eqslasheq]
+ligGroup = "eqslasheq"
+samples = ["=/="]
+sampleRank = 2
+desc = 'Enable special triple-line ligation for `=/=` as inequality'
+
+[simple.slasheq]
+ligGroup = "slasheq"
+samples = ["/=", "=/="]
+desc = 'Enable ligation for `/=` and `=/=` as inequality'
+
+[simple.ltgt-ne]
+ligGroup = "ltgt-ne"
+samples = ["<>"]
+sampleRank = 2
+desc = 'Enable ligation for `<>` as inequality'
+
+[simple.ltgt-diamond]
+ligGroup = "ltgt-diamond"
+samples = ["<>"]
+desc = 'Enable ligation for `<>` as diamond'
+
+[simple.ltgt-diamond-tag]
+ligGroup = "ltgt-diamond-tag"
+samples = ["<>"]
+sampleRank = 3
+desc = 'Enable ligation for `<>` as diamond-shaped empty HTML/XML tag'
+
+[simple.ltgt-slash-tag]
+ligGroup = "ltgt-slash-tag"
+samples = ["</", "/>", "</>"]
+sampleRank = 2
+desc = 'Enable ligation for `</`, `/>` and `</>`'
+
+[simple.brst]
+ligGroup = "brst"
+samples = ["(*", "*)", "(* comm *)"]
+desc = 'Center asterisk in `(*` and `*)`'
+
+[simple.slash-asterisk]
+ligGroup = "slash-asterisk"
+samples = ["/*", "*/", "/* comm */"]
+desc = 'Shift asterisk in `/*` and `*/`'
+
+[simple.plusplus]
+ligGroup =  "plusplus"
+samples = ["++", "+++"]
+desc = 'Enable ligation for `++` and further plus-chaining'
+
+[simple.kern-dotty]
+ligGroup =  "kern-dotty"
+samples = ["::", ":::"]
+desc = 'Move connecting dotty punctuations closer, like for `::`, `:::` and `...`'
+
+[simple.kern-bars]
+ligGroup =  "kern-bars"
+samples = ["||", "|||"]
+desc = 'Move consecutive bars closer, like for `||`, `|||` and `//`'
+
+[simple.logic]
+ligGroup =  "logic"
+samples = ["/\\", "\\/", "|-", "-|"]
+desc = 'Enable ligation for `/\` and `\/`'
+
+[simple.llgg]
+ligGroup =  "llgg"
+samples = ["<<", ">>", "<<<", ">>>"]
+desc = 'Enable ligation for `<<`, `>>` and other angle-bracket chaining'
+
+[simple.llggeq]
+ligGroup =  "llggeq"
+samples = ["<<=", ">>="]
+sampleRank = 2
+desc = 'Enable ligation for `<<=`, `>>=` as shift operator'
+
+[simple.html-comment]
+ligGroup =  "html-comment"
+samples = ["<!--", "<!---"]
+desc = 'Enable ligation for `<!--` and `<!---`'
+
+[simple.colon-greater-as-colon-arrow]
+ligGroup = "colon-greater"
+samples = [":>"]
+sampleRank = 2
+desc = 'Transform `:>` into `:` and a narrow arrow'
+
+[simple.brace-bar]
+ligGroup = 'brace-bar'
+samples = ["{|", "|}"]
+desc = 'Enable ligation for `{|` and `|}`'
+
+[simple.brack-bar]
+ligGroup = 'brack-bar'
+samples = ["[|", "|]"]
+desc = 'Enable ligation for `[|` and `|]`'
+
+[simple.connected-underscore]
+ligGroup = 'connected-underscore'
+samples = ["__", "___"]
+desc = 'Make contiguous underscores (like `__`) connected'
+
+[simple.connected-number-sign]
+ligGroup = 'connected-number-sign'
+samples = ["##", "###"]
+desc = 'Make contiguous number signs (like `##`) connected'
+
+[simple.connected-tilde-as-wave]
+ligGroup = 'connected-tilde-as-wave'
+samples = ["~~", "~~~"]
+desc = 'Make contiguous ASCII tildes (like `~~`) connected as a wave line'
+
+[simple.connected-hyphen]
+ligGroup = 'connected-hyphen'
+samples = ["--", "---"]
+desc = 'Make contiguous hyphen-minuses (like `--`) connected as a straight solid line'
+
+###################################################################################################
+
+# Non-tagged composites, used for inheritance
+[composite.--default-center-ops--]
+buildup = [
+	'center-ops',
+	'center-op-trigger-plus-minus-l',
+	'center-op-trigger-plus-minus-r',
+	'center-op-trigger-equal-l',
+	'center-op-trigger-equal-r',
+	'center-op-trigger-angle-inside',
+	'center-op-trigger-angle-outside',
+	'center-op-influence-colon',
+]
+
+[composite.--c-center-ops--]
+buildup = [
+	'center-ops',
+	'center-op-trigger-equal-l',
+]
+
+[composite.--default-equality-inequality--]
+buildup = [ 'eqeq', 'exeq', 'lteq', 'gteq' ]
+
+[composite.--c-equality-inequality--]
+buildup = [	'eqeqeq', 'eqeq', 'exeqeq', 'exeq', 'lteq', 'gteq' ]
+
+[composite.--raku-equality-inequality--]
+buildup = [	'eqeqeq', 'eqeq', 'exeqeqeq', 'exeq', 'lteq', 'gteq' ]
+
+[composite.--ml-equality-inequality--]
+buildup = [	'eqeq', 'ltgt-ne', 'lteq', 'gteq' ]
+
+[composite.--fstar-equality-inequality--]
+buildup = [	'eqeq', 'ltgt-ne', 'eqeqeq', 'eqexeq', 'lteq', 'gteq' ]
+
+[composite.--haskell-equality-inequality--]
+buildup = [	'eqeq', 'slasheq', 'lteq', 'gteq' ]
+
+[composite.--matlab-equality-inequality--]
+buildup = [	'eqeq', 'tildeeq', 'lteq', 'gteq' ]
+
+[composite.--verilog-equality-inequality--]
+buildup = [	'eqeqeq', 'eqeq', 'exeqeq', 'exeq', 'lteq', 'gteq' ]
+
+[composite.--wolfram-equality-inequality--]
+buildup = [	'eqeq', 'exeq', 'eqexeq-dl', 'lteq', 'gteq' ]
+
+[composite.--erlang-equality-inequality--]
+buildup = [ 'eqeq', 'exeq', 'eqlt', 'gteq' ]
+
+[composite.--default-kern--]
+buildup = [ 'kern-dotty', 'kern-bars' ]
+
+# This feature is on by default by many software
+[composite.default-calt]
+tag     = 'calt'
+brief   = 'Default'
+desc    = 'Default setting in text editors'
+readmeDesc = 'Inherit default ligation set'
+buildup = [
+	'--default-center-ops--',
+	'--default-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'html-comment',
+	'ltgt-diamond-tag',
+	'ltgt-slash-tag',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'llggeq',
+	'plusplus',
+	'connected-underscore'
+]
+
+[composite.dlig]
+tag     = 'dlig'
+brief   = 'Discretionary'
+desc    = 'Discretionary ligatures'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--default-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'counter-arrow-l', 'counter-arrow-r',
+	'html-comment',
+	'ltgt-diamond-tag',
+	'ltgt-slash-tag',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'plusplus',
+	'logic',
+	'brst',
+	'brace-bar',
+	'brack-bar',
+	'connected-underscore',
+	'connected-number-sign',
+	'connected-tilde-as-wave',
+	'connected-hyphen'
+]
+
+[composite.clike]
+tag     = 'CLIK'
+desc    = 'C-Like'
+buildup = [
+	'--c-center-ops--',
+	'--c-equality-inequality--',
+	'--default-kern--',
+	'arrow-r',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'llggeq',
+	'plusplus',
+	'connected-underscore'
+]
+
+[composite.javascript]
+tag     = 'JSPT'
+desc    = 'JavaScript'
+buildup = [
+	'--c-center-ops--',
+	'--c-equality-inequality--',
+	'--default-kern--',
+	'arrow-r',
+	'html-comment',
+	'ltgt-diamond-tag',
+	'ltgt-slash-tag',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'llggeq',
+	'plusplus',
+	'connected-underscore'
+]
+
+[composite.php]
+tag     = 'PHPX'
+desc    = 'PHP'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--c-equality-inequality--',
+	'--default-kern--',
+	'arrow-r',
+	'html-comment',
+	'ltgt-diamond-tag',
+	'ltgt-slash-tag',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'llggeq',
+	'plusplus',
+	'connected-underscore'
+]
+
+[composite.julia]
+tag     = 'JLIA'
+desc    = 'Julia'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--c-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'llgg',
+	'llggeq',
+	'plusplus',
+]
+
+[composite.raku]
+tag     = 'RAKU'
+desc    = 'Raku'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--raku-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'llgg',
+	'llggeq',
+	'plusplus',
+]
+
+[composite.ml]
+tag     = 'MLXX'
+desc    = 'ML'
+buildup = [
+	'--default-center-ops--',
+	'--ml-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'brst',
+	'plusplus',
+	'logic',
+]
+
+[composite.fsharp]
+tag     = 'FSHP'
+desc    = 'F#'
+buildup = [ 'ml' ]
+
+[composite.fstar]
+tag     = 'FSTA'
+desc    = 'F*'
+buildup = [
+	'--default-center-ops--',
+	'--fstar-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'brst',
+	'plusplus',
+	'logic',
+]
+
+[composite.haskell]
+tag     = 'HSKL'
+desc    = 'Haskell'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--haskell-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'counter-arrow-l', 'counter-arrow-r',
+	'trig',
+	'llgg',
+	'ltgt-diamond',
+	'plusplus',
+	'logic',
+]
+
+[composite.idris]
+tag     = 'IDRS'
+desc    = 'Idris'
+buildup = [ 'haskell' ]
+
+[composite.elm]
+tag     = 'ELMX'
+desc    = 'Elm'
+buildup = [ 'haskell' ]
+
+[composite.purescript]
+tag     = 'PURS'
+desc    = 'PureScript'
+buildup = [ 'haskell' ]
+
+[composite.swift]
+tag     = 'SWFT'
+desc    = 'Swift'
+buildup = [
+	'--default-center-ops--',
+	'--default-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'counter-arrow-l', 'counter-arrow-r',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'ltgt-diamond',
+	'plusplus',
+]
+
+[composite.dafny]
+tag     = 'DFNY'
+desc    = 'Dafny'
+buildup = [
+	'--default-center-ops--',
+	'center-op-trigger-bar-l',
+	'center-op-trigger-bar-r',
+	'--default-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'counter-arrow-l', 'counter-arrow-r',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'ltgt-diamond',
+	'plusplus',
+]
+
+[composite.coq]
+tag     = 'COQX'
+desc    = 'Coq'
+buildup = [
+	'--default-center-ops--',
+	'center-op-influence-dot',
+	'--ml-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'counter-arrow-l', 'counter-arrow-r',
+	'trig',
+	'llgg',
+	'plusplus',
+	'logic',
+	'brst',
+]
+
+[composite.matlab]
+tag     = 'MTLB'
+desc    = 'Matlab'
+buildup = [
+	'--default-center-ops--',
+	'--matlab-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'llgg',
+	'plusplus',
+]
+
+[composite.verilog]
+tag     = 'VRLG'
+desc    = 'Verilog'
+buildup = [
+	'--default-center-ops--',
+	'--verilog-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'slash-asterisk',
+	'llgg',
+	'llggeq',
+	'plusplus',
+	'brst',
+]
+
+[composite.wolfram]
+tag     = 'WFLM'
+brief   = 'Wolfram'
+desc    = 'Wolfram Language (Mathematica)'
+buildup = [
+	'--default-center-ops--',
+	'--wolfram-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'ltgt-diamond',
+	'brst',
+	'plusplus',
+	'logic',
+	'colon-greater-as-colon-arrow',
+]
+
+[composite.erlang]
+tag     = 'ERLA'
+brief   = 'Erlang'
+desc    = 'Erlang Language'
+buildup = [
+   	'--default-center-ops--',
+	'--erlang-equality-inequality--',
+	'--default-kern--',
+	'arrow-l', 'arrow-r',
+	'trig',
+	'llgg'
+]

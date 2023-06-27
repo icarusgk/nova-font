@@ -1,0 +1,74 @@
+$$include '../../../meta/macros.ptl'
+
+import [mix linreg clamp fallback] from"../../../support/utils.mjs"
+import [Dotless CvDecompose] from"../../../support/gr.mjs"
+
+glyph-module
+
+glyph-block Letter-Latin-Thorn : begin
+	glyph-block-import CommonShapes
+	glyph-block-import Common-Derivatives
+	glyph-block-import Letter-Shared-Shapes : OBarLeft LetterBarOverlay SerifFrame
+
+	define xThornLeftStroke : SB * 1.25
+	define yThornBowlBot : CAP * 0.19 + [if SLAB (Stroke * 0.375) 0]
+	define [ThornShape yBowlBot] : glyph-proc
+		local yBowlTop : CAP - yBowlBot
+
+		local turn : mix yBowlTop yBowlBot (ArchDepthB / (ArchDepthA + ArchDepthB))
+		local turnRadius : (yBowlTop - yBowlBot) / 2
+
+		include : dispiro
+			widths.rhs
+			flat xThornLeftStroke yBowlTop [heading Rightward]
+			curl (RightSB - turnRadius - CorrectionOMidS) yBowlTop
+			archv
+			g4   (RightSB - O) turn
+			arcvh
+			flat (RightSB - turnRadius + CorrectionOMidS) yBowlBot
+			curl xThornLeftStroke yBowlBot [heading Leftward]
+
+		include : VBar.l xThornLeftStroke 0 CAP
+		if SLAB : begin
+			local sf : SerifFrame Ascender 0 xThornLeftStroke RightSB
+			include : composite-proc sf.lt.fullSide sf.lb.fullSide
+
+	create-glyph 'Thorn' 0xDE : glyph-proc
+		include : MarkSet.capital
+		include : ThornShape yThornBowlBot
+
+	create-glyph 'thorn' 0xFE : glyph-proc
+		include : MarkSet.if
+		include : OBarLeft.shape
+		include : VBar.l SB Descender Ascender
+		if SLAB : begin
+			local sf : SerifFrame Ascender Descender SB RightSB
+			include : composite-proc sf.lt.outer sf.lb.fullSide
+
+	create-glyph 'ThornBarTop/Overlay' : LetterBarOverlay.l.in
+		x   -- xThornLeftStroke
+		top -- (CAP - [if SLAB Stroke 0])
+		bot -- (CAP - yThornBowlBot)
+	create-glyph 'thornBarTop/Overlay' : LetterBarOverlay.l.in
+		x   -- SB
+		top -- (Ascender - [if SLAB Stroke 0])
+		bot -- XH
+	create-glyph 'ThornBarBot/Overlay' : LetterBarOverlay.l.in
+		x   -- xThornLeftStroke
+		bot -- (0 + [if SLAB Stroke 0])
+		top -- yThornBowlBot
+	create-glyph 'thornBarBot/Overlay' : LetterBarOverlay.l.in
+		x   -- SB
+		bot -- (Descender + [if SLAB Stroke 0])
+		top -- 0
+
+	derive-composites 'ThornBarTop' 0xA764 'Thorn' 'ThornBarTop/Overlay'
+	derive-composites 'thornBarTop' 0xA765 'thorn' 'thornBarTop/Overlay'
+	derive-composites 'ThornBarBot' 0xA766 'Thorn' 'ThornBarBot/Overlay'
+	derive-composites 'thornBarBot' 0xA767 'thorn' 'thornBarBot/Overlay'
+
+	alias 'grek/Sho' 0x3F7 'Thorn'
+	create-glyph 'grek/sho' 0x3F8 : glyph-proc
+		include : MarkSet.if
+		include : OBarLeft.shape
+		include : VBar.l SB Descender Ascender
