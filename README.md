@@ -28,6 +28,9 @@ If you prefer to build Nova for further customization instead of downloading one
 npm install
 ```
 
+You will also need to install [`ttfautohint`](https://freetype.org/ttfautohint/index.html#download):
+
+
 2. Run the command to build the set of fonts you want
 
 ```bash
