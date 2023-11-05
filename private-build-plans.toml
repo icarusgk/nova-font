@@ -17,9 +17,9 @@ no-ligation = true
     inherits = "ss17"
 
         [buildPlans.nova.variants.design]
-        paren = "normal"
+        paren = "flat-arc"
         question = "corner"
-        asterisk = "penta-high"
+        asterisk = "penta-mid"
         ampersand = "closed"
         brace = "curly-flat-boundary"
         dollar = "open"
@@ -28,13 +28,16 @@ no-ligation = true
         capital-f = "serifless"
         capital-w = "curly-serifless"
         k = "curly-serifless"
-        f = "serifless"
-        r = "serifed"
+        f = "flat-hook-tailed"
+        r = "corner-hooked-serifed"
         x = "curly-serifless"
         t = "standard"
-        a = "double-storey-serifless"
+        a = "double-storey-tailed"
         w = "curly-serifless"
         four = "semi-open"
+        g = "single-storey-serifless"
+        v = "curly-motion-serifed"
+        m = "tailed-top-left-serifed"
         
         lig-double-arrow-bar = "without-notch"
 
@@ -64,9 +67,9 @@ export-glyph-names = false
     inherits = "ss17"
 
         [buildPlans.nova-lig.variants.design]
-        paren = "normal"
+        paren = "flat-arc"
         question = "corner"
-        asterisk = "penta-high"
+        asterisk = "penta-mid"
         ampersand = "closed"
         brace = "curly-flat-boundary"
         dollar = "open"
@@ -75,13 +78,16 @@ export-glyph-names = false
         capital-f = "serifless"
         capital-w = "curly-serifless"
         k = "curly-serifless"
-        f = "serifless"
-        r = "serifed"
+        f = "flat-hook-tailed"
+        r = "corner-hooked-serifed"
         x = "curly-serifless"
         t = "standard"
-        a = "double-storey-serifless"
+        a = "double-storey-tailed"
         w = "curly-serifless"
         four = "semi-open"
+        g = "single-storey-serifless"
+        v = "curly-motion-serifed"
+        m = "tailed-top-left-serifed"
         
         lig-double-arrow-bar = "without-notch"
 
