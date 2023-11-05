@@ -37,7 +37,7 @@ no-ligation = true
         four = "semi-open"
         g = "single-storey-serifless"
         v = "curly-motion-serifed"
-        m = "tailed-top-left-serifed"
+        m = "top-left-serifed"
         
         lig-double-arrow-bar = "without-notch"
 
@@ -87,7 +87,7 @@ export-glyph-names = false
         four = "semi-open"
         g = "single-storey-serifless"
         v = "curly-motion-serifed"
-        m = "tailed-top-left-serifed"
+        m = "top-left-serifed"
         
         lig-double-arrow-bar = "without-notch"
 
