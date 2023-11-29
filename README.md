@@ -14,7 +14,29 @@
 To use Nova, follow these steps:
 
 1. Head over to the [Releases](https://github.com/icarusgk/nova-font/releases) section of this repo
-2. **Download** the font of your choice, with or without ligatures.
+2. **Download** the font of your choice, with or without ligatures, my recommendation `nova-lig.zip`
+
+## 👀 Usage
+
+When using Visual Studio Code you can reference it with the font name of "Nova" for both versions (lig or no ligs).
+
+Example in `settings.json`
+```json
+{
+  "editor.fontFamily": "Nova"
+}
+```
+
+## 🤓 Nerd Fonts usage
+
+You can reference it with the font name of "Nova Nerd Font" for both versions (lig or no ligs).
+
+Example in `settings.json`
+```json
+{
+  "editor.fontFamily": "Nova Nerd Font"
+}
+```
 
 ## 🏗️ Building Nova
 
